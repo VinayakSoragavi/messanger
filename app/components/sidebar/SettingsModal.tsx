@@ -27,8 +27,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(currentUser, "&TEST_CURRENT_USER");
-
   const {
     register,
     handleSubmit,
@@ -117,7 +115,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   <CldUploadButton
                     options={{ maxFiles: 1 }}
                     onUpload={handleUpload}
-                    uploadPreset="pgc9ehd5"
+                    uploadPreset="d7sh2uwm"
                   >
                     <Button disabled={isLoading} secondary type="button">
                       Change
