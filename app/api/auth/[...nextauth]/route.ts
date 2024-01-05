@@ -24,7 +24,7 @@ export const authOptions: AuthOptions = {
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'password' }
       },
-      async authorize(credentials) {
+      async authorize(credentials:any) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Invalid credentials');
         }
@@ -50,7 +50,7 @@ export const authOptions: AuthOptions = {
 
         return user;
       }
-    })
+    }) as any,
   ],
   debug: process.env.NODE_ENV === 'development',
   session: {
@@ -59,6 +59,6 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 }
 
-const handler = NextAuth(authOptions);
+const handler :any = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
