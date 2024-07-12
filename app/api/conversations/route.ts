@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import prisma from "../../../prisma/index";
 import { pusherServer } from "@/app/libs/pusher";
 import getCurrentUser from "@/app/action/getCurrentUser";
-import prisma from "../../../prisma/index";
 
 export async function POST(request: Request) {
   try {
@@ -23,9 +23,14 @@ export async function POST(request: Request) {
           name,
           isGroup,
           users: {
-            connect: members.map((member: { value: string }) => ({
-              id: member.value,
-            })),
+            connect: [
+              ...members.map((member: { value: string }) => ({
+                id: member.value,
+              })),
+              {
+                id: currentUser.id,
+              },
+            ],
           },
         },
         include: {
@@ -34,7 +39,7 @@ export async function POST(request: Request) {
       });
 
       // Update all connections with new conversation
-      newConversation.users.forEach((user: any) => {
+      newConversation.users.forEach((user) => {
         if (user.email) {
           pusherServer.trigger(user.email, "conversation:new", newConversation);
         }
@@ -68,11 +73,15 @@ export async function POST(request: Request) {
 
     const newConversation = await prisma.conversation.create({
       data: {
-        id: "unique-id-generated-by-your-application", // Ensure to provide a unique ID
-        name: "Direct Message", // Replace with actual data from request or default value
-        isGroup: false, // Replace with actual data from request or default value
         users: {
-          connect: [{ id: currentUser.id }, { id: userId }],
+          connect: [
+            {
+              id: currentUser.id,
+            },
+            {
+              id: userId,
+            },
+          ],
         },
       },
       include: {
@@ -81,7 +90,7 @@ export async function POST(request: Request) {
     });
 
     // Update all connections with new conversation
-    newConversation.users.forEach((user: any) => {
+    newConversation.users.map((user) => {
       if (user.email) {
         pusherServer.trigger(user.email, "conversation:new", newConversation);
       }
@@ -89,7 +98,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(newConversation);
   } catch (error) {
-    console.error("Error creating conversation:", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

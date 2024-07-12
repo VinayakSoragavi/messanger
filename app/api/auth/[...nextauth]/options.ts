@@ -53,7 +53,6 @@ export const options: NextAuthOptions = {
       },
     }) as any,
   ],
-  debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },

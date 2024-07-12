@@ -1,27 +1,27 @@
-import { NextResponse, NextRequest } from "next/server";
+import prisma from "../../../../../prisma/index";
+import { NextResponse } from "next/server";
 import { pusherServer } from "@/app/libs/pusher";
 import getCurrentUser from "@/app/action/getCurrentUser";
-import prisma from "../../../../../prisma/index";
 
 interface IParams {
   conversationId?: string;
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const conversationId = searchParams.get("conversationId");
+    const url = new URL(request.url);
+    const conversationId = url.searchParams.get("conversationId");
 
     if (!conversationId) {
-      console.error("Invalid params:", { conversationId });
-      return NextResponse.json(null);
+      console.error("Invalid params: conversationId is missing");
+      return NextResponse.json(null, { status: 400 });
     }
 
     const currentUser = await getCurrentUser();
 
     if (!currentUser?.id) {
       console.error("Current user not found");
-      return NextResponse.json(null);
+      return NextResponse.json(null, { status: 401 });
     }
 
     const existingConversation = await prisma.conversation.findUnique({
@@ -51,7 +51,7 @@ export async function DELETE(request: NextRequest) {
 
     console.log("Deleted Conversation:", deletedConversation);
 
-    existingConversation.users.forEach((user: any) => {
+    existingConversation.users.forEach((user) => {
       if (user.email) {
         pusherServer.trigger(
           user.email,
@@ -64,6 +64,6 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json(deletedConversation);
   } catch (error) {
     console.error("Error:", error);
-    return NextResponse.json(null);
+    return NextResponse.json(null, { status: 500 });
   }
 }
