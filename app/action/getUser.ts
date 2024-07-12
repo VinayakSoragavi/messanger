@@ -1,3 +1,4 @@
+import prisma from "../../prisma/index";
 import getSession from "./getSession";
 
 

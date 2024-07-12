@@ -51,7 +51,7 @@ export async function DELETE(request: Request) {
 
     console.log("Deleted Conversation:", deletedConversation);
 
-    existingConversation.users.forEach((user) => {
+    existingConversation.users.forEach((user: any) => {
       if (user.email) {
         pusherServer.trigger(
           user.email,
