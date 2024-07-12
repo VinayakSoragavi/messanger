@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     if (isGroup) {
       const newConversation = await prisma.conversation.create({
         data: {
-          id: randomNumbers, // Ensure to provide a unique ID
+          id: randomNumbers.toString, // Ensure to provide a unique ID
           name,
           isGroup,
           users: {
