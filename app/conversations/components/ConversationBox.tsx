@@ -1,4 +1,4 @@
-import { Conversation, Message, User } from "@prisma/client";
+// import { Conversation, Message, User } from "@prisma/client";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import clsx from "clsx";
@@ -49,7 +49,9 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
       return false;
     }
 
-    return seenArray.filter((user) => user.email === userEmail).length !== 0;
+    return (
+      seenArray.filter((user: any) => user.email === userEmail).length !== 0
+    );
   }, [userEmail, lastMessage]);
 
   const lastMessageText = useMemo(() => {

@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 
 import prisma from "@/app/libs/Prismadb";
@@ -23,33 +22,37 @@ export async function DELETE(
 
     const existingConversation = await prisma.conversation.findUnique({
       where: {
-        id: conversationId
+        id: conversationId,
       },
       include: {
-        users: true
-      }
+        users: true,
+      },
     });
 
     if (!existingConversation) {
-      return new NextResponse('Invalid ID', { status: 400 });
+      return new NextResponse("Invalid ID", { status: 400 });
     }
 
     const deletedConversation = await prisma.conversation.deleteMany({
       where: {
         id: conversationId,
         userIds: {
-          hasSome: [currentUser.id]
+          hasSome: [currentUser.id],
         },
       },
     });
 
-    existingConversation.users.forEach((user) => {
+    existingConversation.users.forEach((user: any) => {
       if (user.email) {
-        pusherServer.trigger(user.email, 'conversation:remove', existingConversation);
+        pusherServer.trigger(
+          user.email,
+          "conversation:remove",
+          existingConversation
+        );
       }
     });
 
-    return NextResponse.json(deletedConversation)
+    return NextResponse.json(deletedConversation);
   } catch (error) {
     return NextResponse.json(null);
   }

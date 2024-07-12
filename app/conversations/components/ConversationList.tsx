@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@prisma/client";
+// import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
@@ -16,7 +16,7 @@ import GroupChatModal from "@/app/components/modals/GroupChatModal";
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
-  users: User[];
+  users: any[];
   title?: string;
 }
 
