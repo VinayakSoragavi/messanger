@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import prisma from "@/app/libs/Prismadb"; // Adjust the import path to your prisma instance
+import prisma from "../../../prisma/index"; // Adjust the import path to your prisma instance
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/helper/serverside/Connectdb";
 
