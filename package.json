@@ -23,8 +23,6 @@
     "next-auth": "^4.24.5",
     "next-cloudinary": "^5.16.0",
     "next-superjson-plugin": "^0.5.10",
-    "pusher": "^5.2.0",
-    "pusher-js": "^8.4.0-rc2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",

@@ -1,18 +1,7 @@
 import bcrypt from "bcrypt";
-import prisma from "../../libs/Prismadb";
+import prisma from "@/app/libs/Prismadb"; // Adjust the import path to your prisma instance
 import { NextResponse } from "next/server";
-
-function generateRandomNumbers(count: number): number[] {
-  const randomNumbers: number[] = [];
-  for (let i = 0; i < count; i++) {
-    const randomNumber = Math.floor(Math.random() * 100); // Adjust range as needed
-    randomNumbers.push(randomNumber);
-  }
-  return randomNumbers;
-}
-
-// Generate 10 random numbers
-const randomNumbers = generateRandomNumbers(10);
+import { connectToDatabase } from "@/helper/serverside/Connectdb";
 
 export async function POST(request: Request) {
   try {
@@ -22,18 +11,19 @@ export async function POST(request: Request) {
     if (!email || !name || !password) {
       return new NextResponse("Missing info", { status: 400 });
     }
+
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await prisma.user.create({
       data: {
         email,
-        id: randomNumbers.toString(),
         name,
         hashedPassword,
       },
     });
 
     return NextResponse.json(user);
-  } catch (error: any) {
+  } catch (error) {
+    console.error("Error creating user:", error); // More descriptive error logging
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

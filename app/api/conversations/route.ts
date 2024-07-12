@@ -1,18 +1,7 @@
 import { NextResponse } from "next/server";
-import prisma from "@/app/libs/Prismadb";
 import { pusherServer } from "@/app/libs/pusher";
 import getCurrentUser from "@/app/action/getCurrentUser";
-function generateRandomNumbers(count: number): number[] {
-  const randomNumbers: number[] = [];
-  for (let i = 0; i < count; i++) {
-    const randomNumber = Math.floor(Math.random() * 100); // Adjust range as needed
-    randomNumbers.push(randomNumber);
-  }
-  return randomNumbers;
-}
-
-// Generate 10 random numbers
-const randomNumbers = generateRandomNumbers(10);
+import prisma from "../../../prisma/index";
 
 export async function POST(request: Request) {
   try {
@@ -31,7 +20,6 @@ export async function POST(request: Request) {
     if (isGroup) {
       const newConversation = await prisma.conversation.create({
         data: {
-          id: randomNumbers.toString, // Ensure to provide a unique ID
           name,
           isGroup,
           users: {
