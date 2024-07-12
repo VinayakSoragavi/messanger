@@ -9,9 +9,13 @@ interface IParams {
 }
 
 export async function DELETE(
-  { params }: { params: IParams }
+  { params }: { params?: IParams }
 ) {
   try {
+    if (!params || !params.conversationId) {
+      console.error('Invalid params:', params);
+      return NextResponse.json(null);
+    }
     const { conversationId } = params;
     const currentUser = await getCurrentUser();
 
