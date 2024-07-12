@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       },
       data: {
         body: message,
-        id: randomNumbers,
+        id: randomNumbers.toString(),
         image: image,
         conversation: {
           connect: { id: conversationId },
