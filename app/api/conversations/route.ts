@@ -32,7 +32,7 @@ export async function POST(request: Request) {
               },
             ],
           },
-        },
+        } as any,
         include: {
           users: true,
         },
