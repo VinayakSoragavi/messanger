@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import prisma from "../../../../prisma/index";
 
 export const options: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
@@ -53,6 +52,7 @@ export const options: NextAuthOptions = {
       },
     }) as any,
   ],
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },
