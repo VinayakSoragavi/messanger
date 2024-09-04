@@ -15,6 +15,12 @@ export default function Home() {
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
           Sign in to your account
         </h2>
+        <p className="text-center">
+          <span className="mr-2">email:</span>tester@gmail.com
+        </p>
+        <p className="text-center">
+          <span className="mr-2">password:</span>tester@123
+        </p>
       </div>
       <AuthFrom />
     </div>
